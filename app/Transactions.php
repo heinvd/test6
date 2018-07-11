@@ -14,4 +14,7 @@ class Transactions extends Model
         $this->save();
         return 1;
     }
+
+
+
 }

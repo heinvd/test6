@@ -17,6 +17,26 @@ class TransactionsController extends Controller
         return $balance;
     }
 
+
+    public static function getDiscount($price = 0)
+    {
+        $discount = DB::select("SELECT 
+                                        IFNULL(discount_perc, 0 ) AS discount_perc
+                                    FROM
+                                        discounts
+                                    WHERE
+                                        (
+                                            discount_min <= {$price}
+                                            OR discount_min = 0
+                                        )
+                                    AND (
+                                        discount_max >= {$price}
+                                        OR discount_max = 0
+                                    ) limit 1;");
+        return $discount;
+    }
+
+
     public function listTransactions()
     {
         $transactions = DB::table('transactions')->where('id_user', Auth::user()->id)->get();
